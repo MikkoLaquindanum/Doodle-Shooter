@@ -18,8 +18,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ObservableObject {
     var rocks = SKSpriteNode()
     
     @Published var gameOver = false
+    private let mViewModel = MainMenuViewModel()
     
-    var score = 0
+    var userScore = 0
     var scoreLabel  = SKLabelNode()
     
     var liveArray = [SKSpriteNode]()
@@ -56,7 +57,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ObservableObject {
         
         rockTimer = .scheduledTimer(timeInterval: 0.65, target: self, selector: #selector(makeRocks), userInfo: nil, repeats: true)
         
-        scoreLabel.text = "Score: \(score)"
+        scoreLabel.text = "Score: \(userScore)"
         scoreLabel.fontName = "AmericanTypewriter"
         scoreLabel.fontSize = 50
         scoreLabel.fontColor = .black
@@ -228,9 +229,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ObservableObject {
     }
     
     func updateScore() {
-        score += 1
+        userScore += 1
         
-        scoreLabel.text = "Score: \(score)"
+        scoreLabel.text = "Score: \(userScore)"
     }
     
     override func  touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -250,6 +251,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ObservableObject {
         gameOverLabel.fontSize = 90
         gameOverLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
 //        gameOverLabel.fontColor = UIColor.red
+        mViewModel.compareScores(currentScore: userScore)
+        
         
         addChild(gameOverLabel)
     }

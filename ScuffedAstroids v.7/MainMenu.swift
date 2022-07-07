@@ -9,6 +9,9 @@ import SwiftUI
 import SpriteKit
 
 struct MainMenu: View {
+    
+    @StateObject private var vModel = MainMenuViewModel()
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -33,6 +36,9 @@ struct MainMenu: View {
                         Text("Start Game")
                             .foregroundColor(.red)
                     }
+                    
+                    Text("HighScore: \(vModel.highScore)")
+                        .offset(y: 50)
                     
                     Spacer()
                     
