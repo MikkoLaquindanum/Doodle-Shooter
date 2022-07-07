@@ -54,7 +54,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ObservableObject {
         
         fireTimer = .scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(playerFireFunction), userInfo: nil, repeats: true)
         
-        rockTimer = .scheduledTimer(timeInterval: 1, target: self, selector: #selector(makeRocks), userInfo: nil, repeats: true)
+        rockTimer = .scheduledTimer(timeInterval: 0.65, target: self, selector: #selector(makeRocks), userInfo: nil, repeats: true)
         
         scoreLabel.text = "Score: \(score)"
         scoreLabel.fontName = "AmericanTypewriter"
