@@ -22,14 +22,13 @@ struct MainMenu: View {
                         .font(.custom("Chalkduster", size: 45))
                         .fontWeight(.bold)
                         
+                        .padding()
+                        .padding()
+                        .padding()
+                        .padding()
+                        .padding()
+                        .padding()
                     
-//                    Spacer()
-                        .padding()
-                        .padding()
-                        .padding()
-                        .padding()
-                        .padding()
-                        .padding()
                     NavigationLink {
                         ContentView().navigationBarHidden(true).navigationBarBackButtonHidden(true)
                     } label: {
@@ -48,22 +47,8 @@ struct MainMenu: View {
                     }
                     
                     Spacer()
-//
-//                    HStack {
-//                        Button {
-//
-//                        } label: {
-//                            Text("zdsf")
-//                        }
-//                    }
                     
                 }
-                
-//                Text("MekMillyGaming")
-//                    .font(.custom("AmericanTypewriter-CondensedLight", size: 20))
-                
-//                Spacer()
-                
             }
             
             .frame(width: 510, height: 1100, alignment: .center)

@@ -11,12 +11,10 @@ class MainMenuViewModel: ObservableObject {
     
     @Published var highScore = 0
      let highScoreKey = "ScuffedAstroids"
-//    var highScoreUserDefault = UserDefaults.standard.set(0, forKey: "ScuffedAstroids")
     
     init() {
-        highScore = highScoreValue()
         
-//        highScore = highScoreUserDefault.self
+        highScore = highScoreValue()
         
     }
     

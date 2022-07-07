@@ -12,7 +12,6 @@ import GameKit
 class GameScene: SKScene, SKPhysicsContactDelegate, ObservableObject {
     
     let background = SKSpriteNode(imageNamed: "NewBackground")
-//    let space = SKEmitterNode(fileNamed: "SpaceBackground")
     var player = SKSpriteNode()
     var playerFire = SKSpriteNode()
     var rocks = SKSpriteNode()
@@ -44,13 +43,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ObservableObject {
         background.zPosition = 1
         addChild(background)
         
-//        if let space = SKEmitterNode(fileNamed: "SpaceBackground") {
-//            space?.position = CGPoint(x: size.width / 2, y: size.height / 2)
-//            space?.advanceSimulationTime(10)
-//            space?.zPosition = 1
-//            addChild(space!)
-//        }
-        
         makePlayer(playerCh: 2)
         
         fireTimer = .scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(playerFireFunction), userInfo: nil, repeats: true)
@@ -80,7 +72,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ObservableObject {
             contactA = contact.bodyB
             contactB = contact.bodyA
         }
-//        lazer hit rocks
+
         if contactA.categoryBitMask == CBitmask.playerFire && contactB.categoryBitMask == CBitmask.incomingRocks {
             
             updateScore()
@@ -88,7 +80,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ObservableObject {
             playerFireHitRock(fires: contactA.node as! SKSpriteNode, anotherRock: contactB.node as! SKSpriteNode)
             
         }
-//        rock hits ship
+
         if contactA.categoryBitMask == CBitmask.playerShip && contactB.categoryBitMask == CBitmask.incomingRocks {
             
             player.run(SKAction.repeat(SKAction.sequence([SKAction.fadeOut(withDuration: 0.1), SKAction.fadeIn(withDuration: 0.1)]), count: 8))
@@ -114,8 +106,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ObservableObject {
                 gameOverFunc()
             }
             
-//            playerHitRock(players: contactA.node as! SKSpriteNode, anotherRock: contactB.node as! SKSpriteNode)
-            
         }
         
     }
@@ -140,11 +130,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ObservableObject {
         anotherRock.removeFromParent()
         
         let explo = SKEmitterNode(fileNamed: "Explosions")
-//        explo!.particleSize = CGSize(width: 300, height: 300)
-//        explo?.size = anotherRock.size
         explo?.position = anotherRock.position
         explo?.zPosition = 5
         addChild(explo!)
+        
     }
     
     func addLives(lives: Int) {
@@ -156,6 +145,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ObservableObject {
             live.name = "live\(i)"
             liveArray.append(live)
             addChild(live)
+            
         }
     }
     
@@ -250,7 +240,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ObservableObject {
         gameOverLabel.text = "Game Over"
         gameOverLabel.fontSize = 90
         gameOverLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
-//        gameOverLabel.fontColor = UIColor.red
         mViewModel.compareScores(currentScore: userScore)
         
         
