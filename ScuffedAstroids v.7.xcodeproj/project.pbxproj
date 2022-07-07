@@ -8,17 +8,23 @@
 
 /* Begin PBXBuildFile section */
 		89B683A52876396C0010FA71 /* ScuffedAstroids_v_7App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B683A42876396C0010FA71 /* ScuffedAstroids_v_7App.swift */; };
-		89B683A72876396C0010FA71 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B683A62876396C0010FA71 /* ContentView.swift */; };
-		89B683A92876396D0010FA71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 89B683A82876396D0010FA71 /* Assets.xcassets */; };
 		89B683AC2876396D0010FA71 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 89B683AB2876396D0010FA71 /* Preview Assets.xcassets */; };
+		89B683B7287639E10010FA71 /* Explosions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 89B683B2287639E00010FA71 /* Explosions.sks */; };
+		89B683B8287639E10010FA71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 89B683B3287639E10010FA71 /* Assets.xcassets */; };
+		89B683BA287639E10010FA71 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B683B5287639E10010FA71 /* ContentView.swift */; };
+		89B683BB287639E10010FA71 /* SpaceBackground.sks in Resources */ = {isa = PBXBuildFile; fileRef = 89B683B6287639E10010FA71 /* SpaceBackground.sks */; };
+		89B683BD287658470010FA71 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B683BC287658470010FA71 /* MainMenu.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		89B683A12876396C0010FA71 /* ScuffedAstroids v.7.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ScuffedAstroids v.7.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		89B683A42876396C0010FA71 /* ScuffedAstroids_v_7App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScuffedAstroids_v_7App.swift; sourceTree = "<group>"; };
-		89B683A62876396C0010FA71 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		89B683A82876396D0010FA71 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		89B683AB2876396D0010FA71 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		89B683B2287639E00010FA71 /* Explosions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Explosions.sks; sourceTree = "<group>"; };
+		89B683B3287639E10010FA71 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		89B683B5287639E10010FA71 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		89B683B6287639E10010FA71 /* SpaceBackground.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = SpaceBackground.sks; sourceTree = "<group>"; };
+		89B683BC287658470010FA71 /* MainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,8 +58,11 @@
 			isa = PBXGroup;
 			children = (
 				89B683A42876396C0010FA71 /* ScuffedAstroids_v_7App.swift */,
-				89B683A62876396C0010FA71 /* ContentView.swift */,
-				89B683A82876396D0010FA71 /* Assets.xcassets */,
+				89B683BC287658470010FA71 /* MainMenu.swift */,
+				89B683B5287639E10010FA71 /* ContentView.swift */,
+				89B683B2287639E00010FA71 /* Explosions.sks */,
+				89B683B6287639E10010FA71 /* SpaceBackground.sks */,
+				89B683B3287639E10010FA71 /* Assets.xcassets */,
 				89B683AA2876396D0010FA71 /* Preview Content */,
 			);
 			path = "ScuffedAstroids v.7";
@@ -126,7 +135,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				89B683AC2876396D0010FA71 /* Preview Assets.xcassets in Resources */,
-				89B683A92876396D0010FA71 /* Assets.xcassets in Resources */,
+				89B683BB287639E10010FA71 /* SpaceBackground.sks in Resources */,
+				89B683B8287639E10010FA71 /* Assets.xcassets in Resources */,
+				89B683B7287639E10010FA71 /* Explosions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,7 +148,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				89B683A72876396C0010FA71 /* ContentView.swift in Sources */,
+				89B683BA287639E10010FA71 /* ContentView.swift in Sources */,
+				89B683BD287658470010FA71 /* MainMenu.swift in Sources */,
 				89B683A52876396C0010FA71 /* ScuffedAstroids_v_7App.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
