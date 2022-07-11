@@ -57,6 +57,7 @@ struct MainMenu: View {
             
         }
     }
+
 }
 
 struct MainMenu_Previews: PreviewProvider {

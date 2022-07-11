@@ -16,6 +16,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ObservableObject {
     var playerFire = SKSpriteNode()
     var rocks = SKSpriteNode()
     
+    var bossOne = SKSpriteNode()
+    var bossOneFire = SKSpriteNode()
+    
     @Published var gameOver = false
     private let mViewModel = MainMenuViewModel()
     
@@ -27,11 +30,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ObservableObject {
     var fireTimer = Timer()
     var rockTimer = Timer()
     
+    var bossOneFireTimer = Timer()
+    
+    var bossOneLives = 50
+    
     struct CBitmask {
         static let playerShip: UInt32 = 0b1 // 1
         static let playerFire: UInt32 = 0b10 // 2
         static let incomingRocks: UInt32 = 0b100 // 4
-        static let bossMan: UInt32 = 0b1000 // 8
+        static let bossOne: UInt32 = 0b1000 // 8
+        static let bossOneFire: UInt32 = 0b10000
     }
     
     override func didMove(to view: SKView) {
@@ -41,6 +49,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ObservableObject {
         background.position = CGPoint(x: size.width / 2, y: size.height / 2)
         background.setScale(0.9)
         background.zPosition = 1
+        background.alpha = 0.6
         addChild(background)
         
         makePlayer(playerCh: 2)
@@ -72,15 +81,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ObservableObject {
             contactA = contact.bodyB
             contactB = contact.bodyA
         }
-
+        
         if contactA.categoryBitMask == CBitmask.playerFire && contactB.categoryBitMask == CBitmask.incomingRocks {
             
             updateScore()
             
             playerFireHitRock(fires: contactA.node as! SKSpriteNode, anotherRock: contactB.node as! SKSpriteNode)
             
+            if userScore == 69 {
+                makeBossOne()
+                rockTimer.invalidate()
+                bossOneFireTimer = Timer.scheduledTimer(timeInterval: 0.70, target: self, selector: #selector(bossOneFireFunc), userInfo: nil, repeats: true)
+            }
+            
         }
-
+        
         if contactA.categoryBitMask == CBitmask.playerShip && contactB.categoryBitMask == CBitmask.incomingRocks {
             
             player.run(SKAction.repeat(SKAction.sequence([SKAction.fadeOut(withDuration: 0.1), SKAction.fadeIn(withDuration: 0.1)]), count: 8))
@@ -107,6 +122,100 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ObservableObject {
             }
             
         }
+        
+        if contactA.categoryBitMask == CBitmask.playerFire && contactB.categoryBitMask == CBitmask.bossOne {
+            
+            let explo = SKEmitterNode(fileNamed: "Explosions")
+            explo!.particleSize = CGSize(width: 200, height: 200)
+            explo?.position = contactA.node!.position
+            explo?.zPosition = 5
+            addChild(explo!)
+            
+            contactA.node?.removeFromParent()
+            
+            bossOneLives -= 1
+            
+            if bossOneLives == 0 {
+                
+                let explo = SKEmitterNode(fileNamed: "Explosions")
+                explo!.particleSize = CGSize(width: 300, height: 300)
+                explo?.position = bossOne.position
+                explo?.zPosition = 5
+                addChild(explo!)
+                
+                contactB.node?.removeFromParent()
+                bossOneFireTimer.invalidate()
+                rockTimer = Timer.scheduledTimer(timeInterval: 0.49, target: self, selector: #selector(makeRocks), userInfo: nil, repeats: true)
+            }
+            
+        }
+        
+        if contactA.categoryBitMask == CBitmask.playerShip && contactB.categoryBitMask == CBitmask.bossOneFire {
+            
+            player.run(SKAction.repeat(SKAction.sequence([SKAction.fadeOut(withDuration: 0.1), SKAction.fadeIn(withDuration: 0.1)]), count: 8))
+            
+            contactB.node?.removeFromParent()
+            
+            if let live1 = childNode(withName: "live1") {
+                live1.removeFromParent()
+            } else if let live2 = childNode(withName: "live2") {
+                live2.removeFromParent()
+            } else if let live3 =  childNode(withName: "live3") {
+                live3.removeFromParent()
+                player.removeFromParent()
+                fireTimer.invalidate()
+                bossOneFireTimer.invalidate()
+                
+                let explo = SKEmitterNode(fileNamed: "Explosions")
+                explo!.particleSize = CGSize(width: 300, height: 300)
+                explo?.position = player.position
+                explo?.zPosition = 5
+                addChild(explo!)
+                
+                gameOverFunc()
+                
+            }
+        }
+        
+        if contactA.categoryBitMask == CBitmask.playerShip && contactB.categoryBitMask == CBitmask.bossOne {
+            
+            player.run(SKAction.repeat(SKAction.sequence([SKAction.fadeOut(withDuration: 0.1), SKAction.fadeIn(withDuration: 0.1)]), count: 8))
+            
+            if let live1 = childNode(withName: "live1") {
+                live1.removeFromParent()
+            } else if let live2 = childNode(withName: "live2") {
+                live2.removeFromParent()
+            } else if let live3 =  childNode(withName: "live3") {
+                live3.removeFromParent()
+                player.removeFromParent()
+                fireTimer.invalidate()
+                bossOneFireTimer.invalidate()
+                
+                let explo = SKEmitterNode(fileNamed: "Explosions")
+                explo!.particleSize = CGSize(width: 300, height: 300)
+                explo?.position = player.position
+                explo?.zPosition = 5
+                addChild(explo!)
+                
+                gameOverFunc()
+                
+            }
+        }
+        
+    }
+    
+    func playerHitRock(players: SKSpriteNode, bossLazer: SKSpriteNode) {
+        players.removeFromParent()
+        bossLazer.removeFromParent()
+        
+        fireTimer.invalidate()
+        bossOneFireTimer.invalidate()
+        
+        let explo = SKEmitterNode(fileNamed: "Explosions")
+        explo!.particleSize = CGSize(width: 300, height: 300)
+        explo?.position = players.position
+        explo?.zPosition = 5
+        addChild(explo!)
         
     }
     
@@ -155,7 +264,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ObservableObject {
         switch playerCh {
         case 1:
             shipName = "ship"
-
+            
         default:
             shipName = "BetterShip"
         }
@@ -174,6 +283,58 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ObservableObject {
         
     }
     
+    func makeBossOne() {
+        
+        bossOne = .init(imageNamed: "boss")
+        bossOne.position  = CGPoint(x: size.width / 2, y: size.height + bossOne.size.height)
+        bossOne.zPosition = 10
+        bossOne.setScale(1.1)
+        bossOne.physicsBody = SKPhysicsBody(rectangleOf: bossOne.size)
+        bossOne.physicsBody?.affectedByGravity = false
+        bossOne.physicsBody?.categoryBitMask = CBitmask.bossOne
+        bossOne.physicsBody?.contactTestBitMask = CBitmask.playerShip | CBitmask.playerFire
+        bossOne.physicsBody?.collisionBitMask = CBitmask.playerFire
+        
+        let move1 = SKAction.moveTo(y: size.height / 1.3, duration: 2)
+        let move2 = SKAction.moveTo(x: size.width - bossOne.size.width / 2, duration: 2)
+        let move3 = SKAction.moveTo(x: 0 + bossOne.size.width / 2, duration: 1)
+        let move4 = SKAction.moveTo(x: size.width / 2, duration: 2)
+        let move5 = SKAction.fadeOut(withDuration: 0.2)
+        let move6 = SKAction.fadeIn(withDuration: 0.2)
+        let move7 = SKAction.moveTo(y: 0 + bossOne.size.height / 2, duration: 0.75)
+        let move8 = SKAction.moveTo(y: size.height / 1.3, duration: 2)
+        
+        let action  = SKAction.repeat(SKAction.sequence([move5, move6]), count: 6)
+        let repeatForever = SKAction.repeatForever(SKAction.sequence([move2, move3, move4, action, move7, move8]))
+        let sequence = SKAction.sequence([move1, repeatForever])
+        
+        bossOne.run(sequence)
+        
+        addChild(bossOne)
+    }
+    
+    @objc func bossOneFireFunc() {
+        
+        bossOneFire = .init(imageNamed: "BossLazer")
+        bossOneFire.position = bossOne.position
+        bossOneFire.zPosition = 5
+        bossOneFire.setScale(1.5)
+        bossOneFire.physicsBody = SKPhysicsBody(rectangleOf: bossOneFire.size)
+        bossOneFire.physicsBody?.affectedByGravity = false
+        bossOneFire.physicsBody?.categoryBitMask = CBitmask.bossOneFire
+        bossOneFire.physicsBody?.contactTestBitMask = CBitmask.playerShip
+        bossOneFire.physicsBody?.collisionBitMask = CBitmask.playerShip
+        
+        let move1 = SKAction.moveTo(y: 0 - bossOneFire.size.height, duration: 1.5)
+        let removeAction = SKAction.removeFromParent()
+        
+        let sequence = SKAction.sequence([move1, removeAction])
+        bossOneFire.run(sequence)
+        
+        addChild(bossOneFire)
+        
+    }
+    
     @objc func playerFireFunction() {
         playerFire = .init(imageNamed: "lazer")
         playerFire.size = CGSize(width: 20, height: 35)
@@ -182,8 +343,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, ObservableObject {
         playerFire.physicsBody = SKPhysicsBody(rectangleOf: playerFire.size)
         playerFire.physicsBody?.affectedByGravity = false
         playerFire.physicsBody?.categoryBitMask = CBitmask.playerFire
-        playerFire.physicsBody?.contactTestBitMask = CBitmask.incomingRocks
-        playerFire.physicsBody?.collisionBitMask = CBitmask.incomingRocks
+        playerFire.physicsBody?.contactTestBitMask = CBitmask.incomingRocks | CBitmask.bossOne
+        playerFire.physicsBody?.collisionBitMask = CBitmask.incomingRocks | CBitmask.bossOne
         
         addChild(playerFire)
         
@@ -256,7 +417,7 @@ struct ContentView: View {
                 ZStack {
                     SpriteView(scene: scene)
                         .ignoresSafeArea()
-                
+                    
                     if scene.gameOver == true {
                         NavigationLink {
                             MainMenu().navigationBarHidden(true)

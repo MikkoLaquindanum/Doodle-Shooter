@@ -12,6 +12,7 @@ struct ScuffedAstroids_v_7App: App {
     var body: some Scene {
         WindowGroup {
             MainMenu()
+                .preferredColorScheme(.light)
         }
     }
 }
